@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "outDir": "./out",
+        "allowJs": true,
+        "target": "es6",
+        "module": "CommonJS",
+        "moduleResolution": "node",
+        "esModuleInterop": true,
+        "noImplicitAny": true,
+        "types": [
+            "node"
+        ],
+        "rootDir": "./"
+    },
+    "include": [
+        "./src/**/*"
+    ]
+}
