@@ -1,4 +1,4 @@
-# Note: To run twitch-queue you need to have [NodeJS](https://nodejs.org/en/) installed. After that run `npm i` (or `pnpm i` if you use pnpm, I'd recommend it.) to install the required packages.
+## Note: To run twitch-queue you need to have [NodeJS](https://nodejs.org/en/) installed. After that run `npm i` (or `pnpm i` if you use pnpm, I'd recommend it.) to install the required packages.
 
 ### Usage:
 - Commands:
