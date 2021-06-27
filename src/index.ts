@@ -3,7 +3,7 @@ import { client, Options } from "tmi.js"
 config({ path: "../../.env" });
 import Collection from '@discordjs/collection'; // A collection is a map with extra utility methods, docs for it: https://discord.js.org/#/docs/collection/master/class/Collection
 
-const channels = ['enter-channel'] // Supports only 1 channel currently
+const channels = ['thundazbot'] // Supports only 1 channel currently
 
 const opts: Options = {
     identity: {
@@ -22,11 +22,11 @@ let queueOpen = false;
 twitch.on("message", (target, context, message) => {
     message = message.toLowerCase();
 
-    if (message.startsWith("!open") && (context['mod'] || !context['badges'].broadcaster)) {
+    if (message.startsWith("!open") && (context['mod'] || context['badges'].broadcaster)) {
         if (queueOpen) return twitch.say(target, "The queue is already open!")
         queueOpen = true;
         twitch.say(target, "The queue is now open!")
-    } else if (message.startsWith("!close") && (context['mod'] || !context['badges'].broadcaster)) {
+    } else if (message.startsWith("!close") && (context['mod'] || context['badges'].broadcaster)) {
         if (!queueOpen) return;
         queueOpen = false;
         queue.clear();
@@ -75,7 +75,7 @@ twitch.on("message", (target, context, message) => {
             queue.delete(context['user-id']);
             return twitch.say(target, "Removed you from the queue.")
         case "!remove":
-            if (!context['mod'] && !context['badges'].broadcaster) return;
+            if (!context['mod'] && context['badges'].broadcaster) return;
 
             if (queue.size == 0) return twitch.say(target, "There is nobody in queue!");
             let numberCheck = message.split(/ +/).slice(1)[0];
@@ -97,7 +97,7 @@ twitch.on("message", (target, context, message) => {
                 return twitch.say(target, `Removed ${numDeleted} user(s) from the queue!`)
             }
         case "!clear":
-            if (!context['mod'] && !context['badges'].broadcaster) return;
+            if (!context['mod'] && context['badges'].broadcaster) return;
             queue.clear();
             return twitch.say(target, 'The queue is cleared!')
     }
