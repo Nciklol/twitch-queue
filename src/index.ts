@@ -3,7 +3,7 @@ import { client, Options } from "tmi.js"
 config({ path: "../../.env" });
 import Collection from '@discordjs/collection'; // A collection is a map with extra utility methods, docs for it: https://discord.js.org/#/docs/collection/master/class/Collection
 
-const channels = ['thundazbot'] // Supports only 1 channel currently
+const channels = ['enter-channel'] // Supports only 1 channel currently
 
 const opts: Options = {
     identity: {
