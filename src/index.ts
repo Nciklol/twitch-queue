@@ -19,6 +19,10 @@ const queue = new Collection<string, string>();
 
 let queueOpen = false;
 
+twitch.on("connected", (addr, port) => {
+    console.log(`Logged in to: ${addr}:${port}`)
+})
+
 twitch.on("message", (target, context, message) => {
     message = message.toLowerCase();
 
@@ -75,7 +79,7 @@ twitch.on("message", (target, context, message) => {
             queue.delete(context['user-id']);
             return twitch.say(target, "Removed you from the queue.")
         case "!remove":
-            if (!context['mod'] || !context['badges'].broadcaster) return;
+            if (!context['mod'] && !context['badges'].broadcaster) return;
 
             if (queue.size == 0) return twitch.say(target, "There is nobody in queue!");
             let numberCheck = message.split(/ +/).slice(1)[0];
@@ -97,14 +101,10 @@ twitch.on("message", (target, context, message) => {
                 return twitch.say(target, `Removed ${numDeleted} user(s) from the queue!`)
             }
         case "!clear":
-            if (!context['mod'] || !context['badges'].broadcaster) return;
+            if (!context['mod'] && !context['badges'].broadcaster) return;
             queue.clear();
             return twitch.say(target, 'The queue is cleared!')
     }
-})
-
-twitch.on("connected", (addr, port) => {
-    console.log(`Logged in to: ${addr}:${port}`)
 })
 
 twitch.connect();
