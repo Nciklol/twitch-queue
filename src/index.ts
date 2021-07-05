@@ -26,11 +26,11 @@ twitch.on("connected", (addr, port) => {
 twitch.on("message", (target, context, message) => {
     message = message.toLowerCase();
 
-    if (message.startsWith("!open") && (context['mod'] || context['badges'].broadcaster)) {
+    if (message.startsWith("!open") && (context['mod'] || context['badges']?.broadcaster)) {
         if (queueOpen) return twitch.say(target, "The queue is already open!")
         queueOpen = true;
         twitch.say(target, "The queue is now open!")
-    } else if (message.startsWith("!close") && (context['mod'] || context['badges'].broadcaster)) {
+    } else if (message.startsWith("!close") && (context['mod'] || context['badges']?.broadcaster)) {
         if (!queueOpen) return;
         queueOpen = false;
         queue.clear();
@@ -51,10 +51,10 @@ twitch.on("message", (target, context, message) => {
             if (queue.size == 0) return twitch.say(target, "There is nobody in queue!");
 
             let list = "";
-            let amount = queue.size > 15 ? 15 : queue.size;
 
-            for (let i = 0; i < amount; i++) {
-                list += `${queue.array()[i]}, `
+            for (let i = 0; i < queue.size; i++) {
+               if (list.length + queue.array()[i].length > 500) break;
+               list += `${queue.array()[i]}, `
             }
 
             list = list.substr(0, list.length - 2)
@@ -79,7 +79,7 @@ twitch.on("message", (target, context, message) => {
             queue.delete(context['user-id']);
             return twitch.say(target, "Removed you from the queue.")
         case "!remove":
-            if (!context['mod'] && !context['badges'].broadcaster) return;
+            if (!context['mod'] && !context['badges']?.broadcaster) return;
 
             if (queue.size == 0) return twitch.say(target, "There is nobody in queue!");
             let numberCheck = message.split(/ +/).slice(1)[0];
@@ -101,7 +101,7 @@ twitch.on("message", (target, context, message) => {
                 return twitch.say(target, `Removed ${numDeleted} user(s) from the queue!`)
             }
         case "!clear":
-            if (!context['mod'] && !context['badges'].broadcaster) return;
+            if (!context['mod'] && !context['badges']?.broadcaster) return;
             queue.clear();
             return twitch.say(target, 'The queue is cleared!')
     }

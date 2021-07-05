@@ -15,10 +15,11 @@
   "license": "ISC",
   "dependencies": {
     "@discordjs/collection": "^0.1.6",
-    "@types/node": "^15.12.4",
+    "@types/node": "^15.14.1",
     "@types/tmi.js": "^1.7.1",
     "dotenv": "^10.0.0",
     "nodemon": "^2.0.7",
-    "tmi.js": "^1.8.3"
+    "tmi.js": "^1.8.3",
+    "typescript": "^4.3.5"
   }
 }
