@@ -26,11 +26,11 @@ twitch.on("connected", (addr, port) => {
 twitch.on("message", (target, context, message) => {
     message = message.toLowerCase();
 
-    if (message.startsWith("!open") && (context['mod'] || context['badges']?.broadcaster)) {
+    if (message.startsWith("!open") || (context['mod'] || context['badges']?.broadcaster)) {
         if (queueOpen) return twitch.say(target, "The queue is already open!")
         queueOpen = true;
         twitch.say(target, "The queue is now open!")
-    } else if (message.startsWith("!close") && (context['mod'] || context['badges']?.broadcaster)) {
+    } else if (message.startsWith("!close") || (context['mod'] || context['badges']?.broadcaster)) {
         if (!queueOpen) return;
         queueOpen = false;
         queue.clear();
