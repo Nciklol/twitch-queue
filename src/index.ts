@@ -18,6 +18,7 @@ const twitch = new client(opts);
 const queue = new Collection<string, string>();
 
 let queueOpen = false;
+let cooldown: false | number = false;
 
 twitch.on("connected", (addr, port) => {
     console.log(`Logged in to: ${addr}:${port}`)
@@ -50,16 +51,24 @@ twitch.on("message", (target, context, message) => {
                 return twitch.say(target, `Sucessfully added ${context['display-name']} to the queue. You're in position ${queue.size} `)
             }
         case "!list":
+            if (cooldown) return twitch.say(target, `Please wait ${Math.floor(5 - (Date.now() - cooldown) / 1000)} second(s).`)
             if (queue.size == 0) return twitch.say(target, "There is nobody in queue!");
 
             let list = "";
+            const amount = queue.size <= 15 ? queue.size : 15;
+            let rest = 0;
 
             for (let i = 0; i < queue.size; i++) {
-               if (list.length + queue.array()[i].length > 500) break;
+               
+               if (queue.size > 15) {
+                   rest++;
+                   continue;
+               }
                list += `${queue.array()[i]}, `
             }
 
-            list = list.substr(0, list.length - 2)
+            list = `List: (${amount}) ${list.substr(0, list.length - 2)}${rest > 0 ? ` ${rest}` : ""}`
+            newCoolDown();
             return twitch.say(target, list);
         case "!next":
             if (queue.size == 0) return twitch.say(target, "There is nobody in queue!");
@@ -108,5 +117,12 @@ twitch.on("message", (target, context, message) => {
             return twitch.say(target, 'The queue is cleared!')
     }
 })
+
+function newCoolDown() {
+    cooldown = Date.now();
+    setTimeout(() => {
+        cooldown = false;
+    }, 5000);
+}
 
 twitch.connect();
