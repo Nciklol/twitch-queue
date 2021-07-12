@@ -55,12 +55,12 @@ twitch.on("message", (target, context, message) => {
             if (queue.size == 0) return twitch.say(target, "There is nobody in queue!");
 
             let list = "";
-            const amount = queue.size <= 15 ? queue.size : 15;
+            const amount = queue.size < 15 ? queue.size : 15;
             let rest = 0;
 
             for (let i = 0; i < queue.size; i++) {
                
-               if (queue.size > 15) {
+               if (i > 15) {
                    rest++;
                    continue;
                }
